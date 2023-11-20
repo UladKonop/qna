@@ -1,0 +1,8 @@
+<header>
+<h1>QNA</h1>
+
+    <% if user_signed_in? %>
+      <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-secondary m-1" %>
+    <% end %>
+
+</header>
