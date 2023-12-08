@@ -1,0 +1,10 @@
+h2 Edit Answer
+
+= form_for [question, answer], url: question_answer_path(question, answer), method: :patch do |f|
+  .field
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+
+  .actions
+    = f.submit 'Update Answer', class: 'btn btn-primary'
+= link_to 'Cancel', question_answer_path(question, answer), class: 'btn btn-secondary'

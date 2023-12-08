@@ -1,0 +1,13 @@
+h2 New Question
+
+= form_for question, url: questions_path, method: :post do |f|
+  .field
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+
+  .field
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+
+  .actions
+    = f.submit 'Create Question', class: 'btn btn-primary'
