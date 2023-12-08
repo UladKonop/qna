@@ -1,0 +1,19 @@
+table
+  thead
+    tr
+      th Title
+      th Body
+      th Actions
+
+  tbody
+    - questions.each do |question|
+      tr
+        td = question.title
+        td = question.body
+        td
+          = link_to 'Show', question_path(question), class: 'btn btn-primary'
+          = link_to 'Edit', edit_question_path(question), class: 'btn btn-secondary'
+          = button_to 'Destroy', question_path(question), method: :delete, class: 'btn btn-danger'
+tfoot
+    tr
+      td colspan="3" = link_to 'New Question', new_question_path, class: 'btn btn-success'

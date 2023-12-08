@@ -1,6 +1,12 @@
 FactoryBot.define do
   factory :question do
-    title { "MyString" }
-    body { "MyText" }
+    title { Faker::Lorem.sentence }
+    body { Faker::Lorem.paragraph }
+
+    trait :invalid do
+      title { nil }
+    end
+
+    # association :user
   end
 end

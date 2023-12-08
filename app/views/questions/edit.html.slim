@@ -1,0 +1,14 @@
+h2 Edit Question
+
+= form_for question, url: question_path(question), method: :patch do |f|
+  .field
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+
+  .field
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+
+  .actions
+    = f.submit 'Update Question', class: 'btn btn-primary'
+= link_to 'Cancel', question_path(question), class: 'btn btn-secondary'
