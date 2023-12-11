@@ -3,8 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, user: user, question: question) }
+  
+  before do
+    login(user)
+  end
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -61,15 +66,35 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer, question: question) }
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, user: user, question: question) }
 
-    it 'deletes the answer from the DB' do
-      expect { delete :destroy, params: { question_id: question, id: answer.id } }.to change(Answer, :count).by(-1)
+    context 'when the user is the author of the answer' do
+      before { sign_in(user) }
+
+      it 'deletes the answer from the DB' do
+        expect { delete :destroy, params: { question_id: question, id: answer.id } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to the question show view' do
+        delete :destroy, params: { question_id: question, id: answer.id }
+        expect(response).to redirect_to(question)
+      end
     end
 
-    it 'redirects to the question show view' do
-      delete :destroy, params: { question_id: question, id: answer.id }
-      expect(response).to redirect_to(question)
+    context 'when the user is not the author of the answer' do
+      let(:other_user) { create(:user) }
+      before { sign_in(other_user) }
+
+      it "doesn't delete the answer from the DB" do
+        expect { delete :destroy, params: { question_id: question, id: answer.id } }.not_to change(Answer, :count)
+      end
+
+      it "redirects to the question show view" do
+        delete :destroy, params: { question_id: question, id: answer.id }
+        expect(response).to redirect_to(question)
+      end
     end
   end
 end

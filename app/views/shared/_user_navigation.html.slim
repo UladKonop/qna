@@ -1,0 +1,6 @@
+| Welcome, 
+b = current_user.email
+| 
+span = ' !'
+| &nbsp;|&nbsp;
+= link_to 'Logout', destroy_user_session_path, class: 'some-css-class', data: { turbo_method: :delete }

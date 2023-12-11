@@ -1,13 +1,7 @@
 h2 New Question
 
-= form_for question, url: questions_path, method: :post do |f|
-  .field
-    = f.label :title
-    = f.text_field :title, class: 'form-control'
+= render partial: 'shared/errors', locals: { resource: question }
 
-  .field
-    = f.label :body
-    = f.text_area :body, class: 'form-control'
+= render 'form'
 
-  .actions
-    = f.submit 'Create Question', class: 'btn btn-primary'
+= link_to 'Back', questions_path, class: 'btn btn-primary'
