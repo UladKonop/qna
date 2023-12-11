@@ -1,12 +1,10 @@
 FactoryBot.define do
   factory :question do
-    title { Faker::Lorem.sentence }
+    sequence(:title) { |n| "#{Faker::Lorem.sentence} #{n}" }
     body { Faker::Lorem.paragraph }
 
     trait :invalid do
       title { nil }
     end
-
-    # association :user
   end
 end

@@ -1,0 +1,6 @@
+- if resource.present? && resource.errors.any?
+  .resource-errors
+    h2= "Errors: #{resource.errors.count}"
+    ul
+      - resource.errors.each do |error|
+        li= error.full_message

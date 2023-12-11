@@ -1,0 +1,9 @@
+nav.navbar.navbar-light.bg-light
+  = link_to "QNA", root_path, class: 'navbar-brand'
+  span.navbar-text
+    - if user_signed_in?
+      == render 'shared/user_navigation', current_user: current_user
+    - else
+      = link_to 'Log in', new_user_session_path
+      |  | 
+      = link_to 'Sign up', new_user_registration_path

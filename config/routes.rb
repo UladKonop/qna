@@ -5,5 +5,5 @@ Rails.application.routes.draw do
     resources :answers, except: %w[index]
   end
 
-  root 'questions#index'
+  root to: 'questions#index'
 end
