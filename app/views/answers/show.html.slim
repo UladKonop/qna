@@ -1,9 +1,10 @@
 h2 Answer Details
 
-dl
-  dt Body
-  dd= answer.body
+.answers
+  dl
+    dt Body
+    dd= answer.body
 
 - if current_user&.author_of?(answer)
-  = link_to 'Edit', edit_question_answer_path(question, answer), class: 'btn btn-secondary'
-= link_to 'Back', question_path(question), class: 'btn btn-primary'
+  = link_to 'Edit', edit_answer_path(answer), class: 'btn btn-secondary'
+= link_to 'Back', question_path(answer.question), class: 'btn btn-primary'

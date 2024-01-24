@@ -1,0 +1,55 @@
+var answerId = <%= answer.id %>;
+
+var answerRows = document.querySelectorAll('[class^="answer-"]');
+
+var row = answerRows[0];
+var bestStatusElement = row.querySelector('.best-status');
+
+if (bestStatusElement.textContent.trim() === '+') {
+  bestStatusElement.textContent = '-';
+
+  var parentRow = row.closest('tr');
+  var cells = parentRow.querySelectorAll('td');
+  var actions = cells[cells.length - 1];  
+  var showButton = actions.querySelector('.btn-primary');
+
+  var url = showButton.getAttribute('href');
+
+  var setAsBestLink = document.createElement('a');
+  setAsBestLink.href = '/answers/' + url.split('/').pop() + '/mark_as_best';
+  setAsBestLink.className = 'btn btn-success best-answer-link';
+  setAsBestLink.dataset.method = 'post';
+  setAsBestLink.dataset.remote = 'true';
+  setAsBestLink.textContent = 'Set as Best';
+
+  showButton.parentNode.insertBefore(setAsBestLink, showButton.nextSibling);
+
+  var trElement = document.querySelector('tr[class="answer-' + answerId + '"]');
+
+  var tbody = trElement.parentNode;
+
+  tbody.insertBefore(trElement, parentRow);
+
+  var setAsBestButton = trElement.querySelector('.best-answer-link');
+  var bestStatusElement = trElement.querySelector('.best-status');
+
+  setAsBestButton.parentNode.removeChild(setAsBestButton);
+  bestStatusElement.textContent = '+';
+} else {
+  var parentRow = row.closest('tr');
+  var cells = parentRow.querySelectorAll('td');
+  var actions = cells[cells.length - 1];  
+  var showButton = actions.querySelector('.btn-primary');
+
+  var trElement = document.querySelector('tr[class="answer-' + answerId + '"]');
+  console.log(trElement);
+  var tbodyElement = trElement.parentNode;
+
+  var setAsBestButton = trElement.querySelector('.best-answer-link');
+  var bestStatusElement = trElement.querySelector('.best-status');
+
+  setAsBestButton.parentNode.removeChild(setAsBestButton);
+  bestStatusElement.textContent = '+';
+
+  tbodyElement.insertBefore(trElement, tbodyElement.firstChild);
+}

@@ -40,14 +40,14 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     context 'with valid attributes' do
       it 'updates the answer in the DB' do
-        patch :update, params: { question_id: question, id: answer, answer: { body: 'Updated Body' } }
+        patch :update, params: { question_id: question, id: answer, answer: { body: 'Updated Body' } }, format: :js
         answer.reload
         expect(answer.body).to eq('Updated Body')
       end
 
       it 'redirects to the question show view' do
-        patch :update, params: { question_id: question, id: answer, answer: { body: 'Updated Body' } }
-        expect(response).to redirect_to(question)
+        patch :update, params: { question_id: question, id: answer, answer: { body: 'Updated Body' } }, format: :js
+        expect(response).to render_template :update
       end
     end
 
@@ -94,6 +94,36 @@ RSpec.describe AnswersController, type: :controller do
       it "redirects to the question show view" do
         delete :destroy, params: { question_id: question, id: answer.id }
         expect(response).to redirect_to(question)
+      end
+    end
+  end
+
+  describe 'POST #mark_as_best' do
+    context 'when the user is the author of the question' do
+      before { sign_in(user) }
+
+      it 'marks the answer as the best' do
+        post :mark_as_best, params: { question_id: question, id: answer.id }, format: :js
+
+        answer.reload
+        expect(answer.best?).to be true
+      end
+
+      it 'renders the mark_as_best template' do
+        post :mark_as_best, params: { question_id: question, id: answer.id }, format: :js
+        expect(response).to render_template :mark_as_best
+      end
+    end
+
+    context 'when the user is not the author of the question' do
+      let(:other_user) { create(:user) }
+      before { sign_in(other_user) }
+
+      it 'does not mark the answer as the best' do
+        post :mark_as_best, params: { question_id: question, id: answer.id }, format: :js
+
+        answer.reload
+        expect(answer.best?).to be false
       end
     end
   end

@@ -9,33 +9,23 @@ dl
 - if current_user&.author_of?(question)
   = link_to 'Edit', edit_question_path(question), class: 'btn btn-secondary'
 
-h3 Answers
-- if question.answers.any?
-  table
+h3.answers_table_title Answers
+- if answers.any?
+  table.answers-table
     thead
       tr
         th Body
+        th Best
         th Actions
 
-    tbody
-      - question.answers.each do |answer|
-        tr
-          td= answer.body
-          td
-            = link_to 'Show', [question, answer], class: 'btn btn-primary'
-            - if current_user&.author_of?(answer) && answer.persisted?
-              = link_to 'Edit', edit_question_answer_path(question, answer), class: 'btn btn-secondary'
-              = link_to 'Delete', [question, answer], data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger'
+    tbody.answers
+      = render answers
 - else
-  p No answers yet.
+  p.no_answers No answers yet.
 
-= simple_form_for [question, question.answers.build], url: question_answers_path(question), method: :post, local: true do |f|
+.answer_errors
   = render partial: 'shared/errors', locals: { resource: @new_answer }
-  .field
-    = f.label :body, 'Your Answer:'
-    = f.text_area :body, class: 'form-control'
 
-  .actions
-    = f.submit 'Answer', class: 'btn btn-primary'
+= render 'answers/form', locals: { question: question }
 
 = link_to 'Back', questions_path, class: 'btn btn-primary'

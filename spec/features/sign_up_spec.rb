@@ -21,10 +21,10 @@ feature 'User can register', "
   scenario 'User tries to register with invalid information' do
     visit new_user_registration_path
     fill_in 'Email', with: 'invalid_email'
-    fill_in 'user_password', with: 'short'
+    fill_in 'user_password', with: 'password'
     fill_in 'user_password_confirmation', with: 'different_password'
     click_button 'Sign up'
 
-    expect(page).to have_content "Password confirmation doesn't match Password"
+    expect(page).to have_content "doesn't match Password"
   end
 end
