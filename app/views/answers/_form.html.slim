@@ -1,0 +1,7 @@
+= form_with model: [question, question.answers.build], local: false do |f|
+  .field
+    = f.label :body, 'Your Answer:'
+    = f.text_area :body, class: 'form-control'
+
+  .actions
+    = f.submit 'Answer', class: 'btn btn-primary'

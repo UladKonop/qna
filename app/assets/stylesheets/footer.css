@@ -1,0 +1,8 @@
+table.footer {
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-style: hidden;
+  }
+  table.footer td {
+    border: 20px solid white;
+  }

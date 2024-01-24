@@ -9,25 +9,48 @@ class AnswersController < ApplicationController
     answer = question.answers.build(answer_params)
     answer.user = current_user
 
-    if answer.save
-      redirect_to question, notice: 'Answer was successfully created.'
-    else
-      @new_answer = answer
-      render 'questions/show'
+    respond_to do |format|
+      if answer.save
+        format.html { redirect_to question, notice: 'Answer was successfully created.' }
+        format.js { @new_answer = answer }
+      else
+        format.html { render 'questions/show' }
+        format.js { @new_answer = answer }
+      end
     end
   end
 
   def update
-    if answer.update(answer_params)
-      redirect_to question, notice: 'Answer was successfully updated.'
-    else
-      render 'questions/show'
+    respond_to do |format|
+      if answer.update(answer_params)
+        format.html { redirect_to question, notice: 'Answer was successfully updated.' }
+        format.js
+      else
+        format.html { render 'questions/show' }
+        format.js
+      end
     end
   end
 
   def destroy
-    answer.destroy
-    redirect_to question, notice: 'Answer was successfully destroyed.'
+    respond_to do |format|
+      if answer.destroy
+        format.html { redirect_to question, notice: 'Answer was successfully destroyed.' }
+        format.js
+      else
+        format.html { render 'questions/show' }
+        format.js
+      end
+    end
+  end
+
+  def mark_as_best
+    respond_to do |format|
+      if answer.mark_as_best
+        format.html { render 'questions/show' }
+        format.js
+      end
+    end
   end
 
   private

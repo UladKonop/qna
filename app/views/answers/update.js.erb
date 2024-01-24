@@ -1,0 +1,18 @@
+var answerErrorsElement = document.querySelector('.answer_errors');
+
+<% if answer.errors.any? %>
+  var errorsHtml = '<%= j render partial: 'shared/errors', locals: { resource: answer } %>';
+  answerErrorsElement.innerHTML = errorsHtml;
+<% else %>
+  answerErrorsElement.classList.add('hidden');
+
+  var answerContainer = document.querySelector('.answer-<%= answer.id %>');
+  
+  var editAnswerForm = answerContainer.querySelector('.edit-answer-<%= answer.id %>');
+  if (editAnswerForm) {
+    editAnswerForm.classList.add('hidden');
+  }
+
+  var updatedAnswerHtml = '<%= j render partial: 'answers/answer', locals: { answer: answer } %>';
+  answerContainer.innerHTML = updatedAnswerHtml;
+<% end %>

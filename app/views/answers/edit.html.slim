@@ -1,10 +1,14 @@
 h2 Edit Answer
 
-= form_for [question, answer], url: question_answer_path(question, answer), method: :patch do |f|
+.answer_errors
+  = render partial: 'shared/errors', locals: { resource: answer }
+
+= form_with model: answer, method: :patch, local: false do |f|
   .field
-    = f.label :body
+    = f.label :body, 'Your Answer:'
     = f.text_area :body, class: 'form-control'
 
   .actions
     = f.submit 'Update Answer', class: 'btn btn-primary'
-= link_to 'Cancel', question_answer_path(question, answer), class: 'btn btn-secondary'
+
+= link_to 'Cancel', answer_path(answer), class: 'btn btn-secondary'

@@ -1,0 +1,17 @@
+<% if answer.destroyed? %>
+  var answerContainer = document.querySelector('.answer-<%= answer.id %>');
+  if (answerContainer) {
+    answerContainer.remove();
+  }
+
+  var answerElements = document.querySelector('.answers');
+  var answersTable = document.querySelector('.answers-table');
+  
+  var noAnswersMessage = document.createElement('p');
+  noAnswersMessage.className = 'no_answers';
+  noAnswersMessage.textContent = 'No answers yet.';
+
+  if (answerElements && answerElements.children.length === 0) {
+    answersTable.parentNode.replaceChild(noAnswersMessage, answersTable);
+  }
+<% end %>

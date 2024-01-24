@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
 
   expose :question
   expose :questions, ->{ Question.all }
+  expose :answers, -> { question.answers.sort_by_best }
 
   def create
     question.user = current_user

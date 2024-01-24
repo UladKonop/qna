@@ -1,0 +1,76 @@
+var answerErrorsElement = document.querySelector('.answer_errors');
+
+<% if @new_answer.errors.any? %>
+  var errorsHtml = '<%= j render partial: 'shared/errors', locals: { resource: @new_answer } %>';
+  answerErrorsElement.innerHTML = errorsHtml;
+<% else %>
+  var noAnswersElement = document.querySelector('.no_answers');
+
+  if (noAnswersElement) {
+    
+    // Создаем таблицу
+    const table = document.createElement('table');
+
+    // Создаем заголовок (thead) и его строку (tr)
+    const thead = document.createElement('thead');
+    const theadRow = document.createElement('tr');
+
+    // Создаем ячейки заголовка (th) и добавляем их в строку
+    const bodyHeader = document.createElement('th');
+    bodyHeader.textContent = 'Body';
+    theadRow.appendChild(bodyHeader);
+
+    const actionsHeader = document.createElement('th');
+    actionsHeader.textContent = 'Actions';
+    theadRow.appendChild(actionsHeader);
+
+    // Добавляем строку заголовка в thead
+    thead.appendChild(theadRow);
+
+    // Создаем тело (tbody)
+    const tbody = document.createElement('tbody');
+    tbody.className = 'answers'; // Устанавливаем класс tbody
+
+    // Добавляем тело к таблице
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    // Находим элемент h3 с текстом 'Answers'
+    const h3Element = document.querySelector('.answers_table_title');
+
+    // Если элемент найден, вставляем таблицу перед ним
+    if (h3Element) {
+    h3Element.insertAdjacentElement('afterend', table);
+    }
+
+    noAnswersElement.innerHTML = '';
+
+    var answersElement = document.querySelector('.answers');
+
+    answerErrorsElement.innerHTML = '';
+    var newRowHtml = '<%= j render partial: 'answer', locals: { answer: @new_answer } %>';
+    
+    var tempElement = document.createElement('tr');
+    tempElement.innerHTML = newRowHtml;
+    answersElement.appendChild(tempElement);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('answer_body').value = '';
+});
+
+  } else {
+    var answersElement = document.querySelector('.answers');
+
+    answerErrorsElement.innerHTML = '';
+    var newRowHtml = '<%= j render partial: 'answer', locals: { answer: @new_answer } %>';
+    
+    var tempElement = document.createElement('tr');
+    tempElement.innerHTML = newRowHtml;
+    answersElement.appendChild(tempElement);
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('answer_body').value = '';
+});
+  }
+<% end %>
