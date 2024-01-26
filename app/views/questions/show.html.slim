@@ -6,6 +6,14 @@ dl
 
   dt Body
   dd= question.body
+
+  dt Files
+  - if question.files.attached?
+    - question.files.each do |file|
+      dd= link_to file.filename.to_s, url_for(file)
+  - else
+   dd = 'No files yet.'
+
 - if current_user&.author_of?(question)
   = link_to 'Edit', edit_question_path(question), class: 'btn btn-secondary'
 
@@ -16,6 +24,7 @@ h3.answers_table_title Answers
       tr
         th Body
         th Best
+        th Files
         th Actions
 
     tbody.answers

@@ -1,7 +1,11 @@
 = form_with model: [question, question.answers.build], local: false do |f|
   .field
     = f.label :body, 'Your Answer:'
-    = f.text_area :body, class: 'form-control'
+    = f.text_area :body, class: 'form-control', id: 'new-answer-body'
+
+  .field
+    = f.label :files
+    = f.file_field :files, class: 'form-control', multiple: true, id: 'answer-files', direct_upload: true
 
   .actions
     = f.submit 'Answer', class: 'btn btn-primary'

@@ -1,8 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :authorize_user, only: [:edit, :destroy]
+  before_action -> { authorize_user(question, question) }, only: [:edit, :destroy]
 
-  expose :question
+  expose :question, find: ->(id, scope){ scope.with_attached_files.find(id) }
   expose :questions, ->{ Question.all }
   expose :answers, -> { question.answers.sort_by_best }
 
@@ -33,10 +33,6 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body)
-  end
-
-  def authorize_user
-    super(question, question)
+    params.require(:question).permit(:title, :body, files: [])
   end
 end

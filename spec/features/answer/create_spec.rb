@@ -16,7 +16,7 @@ feature 'User can create answer', %q{
     end
 
     scenario 'answers a question', js: true do
-      fill_in 'answer_body', with: 'Test answer'
+      fill_in 'new-answer-body', with: 'Test answer'
       click_on 'Answer'
 
       within('.answers') do
@@ -33,7 +33,7 @@ feature 'User can create answer', %q{
 
   scenario 'Unauthenticated user tries to answer a question' do
     visit question_path(question)
-    fill_in 'answer_body', with: 'Test answer'
+    fill_in 'new-answer-body', with: 'Test answer'
     click_on 'Answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'

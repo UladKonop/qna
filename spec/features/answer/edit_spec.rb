@@ -21,10 +21,35 @@ feature 'User can edit answer', %q{
         within(".answer-#{answer.id}") do
           click_on 'Edit'
 
-          fill_in 'answer_body', with: 'Updated answer'      
+          fill_in 'answer-body', with: 'Updated answer'
+          attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      
           click_on 'Update Answer'
 
           expect(page).to have_content 'Updated answer'
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+        end
+      end
+    end
+
+    scenario 'edits own answer', js: true do
+      within(".answers") do
+        within(".answer-#{answer.id}") do
+          click_on 'Edit'
+
+          fill_in 'answer-body', with: 'Updated answer'
+          attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      
+          click_on 'Update Answer'
+
+          click_on 'Edit'
+          first('a', text: 'x').click
+          click_on 'Update Answer'
+
+          expect(page).to have_content 'Updated answer'
+          expect(page).not_to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
         end
       end
     end
@@ -33,7 +58,7 @@ feature 'User can edit answer', %q{
       within(".answers") do
         within(".answer-#{answer.id}") do
           click_on 'Edit'
-          fill_in 'answer_body', with: ''      
+          fill_in 'answer-body', with: ''      
           click_on 'Update Answer'
         end
       end
