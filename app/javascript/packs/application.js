@@ -10,6 +10,7 @@ import "channels"
 // import $ from "jquery";
 
 require("answers")
+require("questions")
 
 Rails.start()
 Turbolinks.start()

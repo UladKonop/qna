@@ -7,15 +7,11 @@ var answerErrorsElement = document.querySelector('.answer_errors');
   var noAnswersElement = document.querySelector('.no_answers');
 
   if (noAnswersElement) {
-    
-    // Создаем таблицу
     const table = document.createElement('table');
 
-    // Создаем заголовок (thead) и его строку (tr)
     const thead = document.createElement('thead');
     const theadRow = document.createElement('tr');
 
-    // Создаем ячейки заголовка (th) и добавляем их в строку
     const bodyHeader = document.createElement('th');
     bodyHeader.textContent = 'Body';
     theadRow.appendChild(bodyHeader);
@@ -24,21 +20,16 @@ var answerErrorsElement = document.querySelector('.answer_errors');
     actionsHeader.textContent = 'Actions';
     theadRow.appendChild(actionsHeader);
 
-    // Добавляем строку заголовка в thead
     thead.appendChild(theadRow);
 
-    // Создаем тело (tbody)
     const tbody = document.createElement('tbody');
-    tbody.className = 'answers'; // Устанавливаем класс tbody
+    tbody.className = 'answers';
 
-    // Добавляем тело к таблице
     table.appendChild(thead);
     table.appendChild(tbody);
 
-    // Находим элемент h3 с текстом 'Answers'
     const h3Element = document.querySelector('.answers_table_title');
 
-    // Если элемент найден, вставляем таблицу перед ним
     if (h3Element) {
     h3Element.insertAdjacentElement('afterend', table);
     }
@@ -54,10 +45,8 @@ var answerErrorsElement = document.querySelector('.answer_errors');
     tempElement.innerHTML = newRowHtml;
     answersElement.appendChild(tempElement);
     
-    document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('answer_body').value = '';
-});
-
+    document.getElementById('new-answer-body').value = '';
+    document.getElementById('answer-files').value = '';
   } else {
     var answersElement = document.querySelector('.answers');
 
@@ -67,10 +56,8 @@ var answerErrorsElement = document.querySelector('.answer_errors');
     var tempElement = document.createElement('tr');
     tempElement.innerHTML = newRowHtml;
     answersElement.appendChild(tempElement);
-    
-    
-    document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('answer_body').value = '';
-});
+
+    document.getElementById('new-answer-body').value = '';
+    document.getElementById('answer-files').value = '';
   }
 <% end %>

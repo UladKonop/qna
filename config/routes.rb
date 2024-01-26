@@ -9,5 +9,7 @@ Rails.application.routes.draw do
     end
   end
 
+  delete '/attachments/:id/:resource_type/:resource_id', to: 'attachments#destroy', as: :destroy_attachment
+
   root to: 'questions#index'
 end

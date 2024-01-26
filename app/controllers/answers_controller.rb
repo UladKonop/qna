@@ -1,9 +1,10 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :authorize_user, only: [:edit, :destroy]
+  before_action -> { authorize_user(answer, answer.question) }, only: [:edit, :destroy]
+  before_action -> { authorize_user(question, question) }, only: [:mark_as_best]
 
   expose :question
-  expose :answer
+  expose :answer, find: ->(id, scope){ scope.with_attached_files.find(id) }
 
   def create
     answer = question.answers.build(answer_params)
@@ -56,10 +57,6 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
-  end
-
-  def authorize_user
-    super(answer, answer.question)
+    params.require(:answer).permit(:body, files: [])
   end
 end

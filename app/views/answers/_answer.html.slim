@@ -8,7 +8,14 @@ tr class="answer-#{answer.id}"
     = form_with model: answer, method: :patch, local: false, class: 'hidden', html: { id: "edit-answer-#{ answer.id }"} do |f|
       .field
         = f.label :body, 'Your Answer:'
-        = f.text_area :body, class: 'form-control'
+        = f.text_area :body, class: 'form-control', id: 'answer-body'
+
+      .field
+        = hidden_field_tag 'question_id', question.id
+
+      .field
+        = f.label :files
+        = f.file_field :files, class: 'form-control', multiple: true, direct_upload: true
 
       .actions
         = f.submit 'Update Answer', class: 'btn btn-primary'
@@ -17,10 +24,18 @@ tr class="answer-#{answer.id}"
     .best-status
       = answer.best? ? '+' : '-'
 
+  td class="answer-#{answer.id}-files"
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        div.link-to-file
+          = link_to file.filename.to_s, url_for(file), id: "file-#{file.id}"
+    - else
+      dd = 'No files yet.'
+
   td
     = link_to 'Show', answer, class: 'btn btn-primary'
     - if !answer.best? && current_user&.author_of?(question)
-        = link_to 'Set as Best', mark_as_best_answer_path(answer), data: { method: :post }, remote: true, class: 'btn btn-success best-answer-link'
+        = link_to 'Set as Best', mark_as_best_answer_path(id: answer.id, question_id: question.id), data: {method: :post }, remote: true, class: 'btn btn-success best-answer-link'
     - if current_user&.author_of?(answer) && answer.persisted?
-      = link_to 'Edit', '#', class: 'btn btn-secondary edit-answer-link', data: { answer_id: answer.id }
+      = link_to 'Edit', '#', class: 'btn btn-secondary edit-answer-link', data: { answer_id: answer.id, question_id: question.id }
       = link_to 'Delete', answer, data: { method: :delete }, remote: true, class: 'btn btn-danger'
