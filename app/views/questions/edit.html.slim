@@ -9,6 +9,13 @@ h2 Edit Question
     = f.label :body
     = f.text_area :body, class: 'form-control'
 
+  h3= 'Links:'
+  .links
+    = f.fields_for :links do |link|
+      = render 'link_fields', f: link
+    .links
+      = link_to_add_association 'add link', f, :links
+
   .field.files
     = f.label :files
     - if question.files.attached?

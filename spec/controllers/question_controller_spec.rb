@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let!(:question) { create(:question, user: user) }
+  let(:question) { create(:question, user: user) }
 
   before do
     login(user)
@@ -20,8 +20,18 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+
   describe 'GET #show' do
     before { get :show, params: { id: question } }
+    
+    it 'assigns new answer for question' do
+      expect(assigns(:exposed_answer)).to be_a_new(Answer)
+    end
+
+    it 'assigns new link for answer' do
+      expect(assigns(:exposed_answer).links.first).to be_a_new(Link)
+    end
+
 
     it 'renders show view' do
       expect(response).to render_template :show
@@ -30,6 +40,14 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #new' do
     before { get :new }
+
+    it 'assigns a new Question to question' do
+      expect(assigns(:exposed_question)).to be_a_new(Question)
+    end
+
+    it 'assigns a new Question to question' do
+      expect(assigns(:exposed_question).links.first).to be_a_new(Link)
+    end
 
     it 'renders new view' do
       expect(response).to render_template :new
@@ -49,7 +67,6 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves a new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
-
     end
 
     context 'with invalid attributes' do

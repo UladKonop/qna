@@ -12,7 +12,7 @@ gem 'pg'
 gem 'puma', '~> 5.0'
 # UI
 gem 'bootstrap', '~> 5.1.3'
-gem 'jquery-rails'
+# gem 'jquery-rails'
 gem 'octicons_helper'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
@@ -24,12 +24,13 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.0'
+gem 'redis-rails'
 
 # Authentication
 gem 'devise'
 
 # Ruby toolkit for the GitHub API
-gem 'octokit', '~> 4.0'
+gem "octokit", "~> 5.0"
 
 # # Provide support for additional languages
 # gem 'rails-i18n'
@@ -82,5 +83,7 @@ gem "simple_form"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "faraday-retry"
 gem "aws-sdk-s3"
+gem "cocoon"
+gem "faraday-retry"
+gem "sidekiq"

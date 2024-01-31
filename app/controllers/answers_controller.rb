@@ -6,17 +6,21 @@ class AnswersController < ApplicationController
   expose :question
   expose :answer, find: ->(id, scope){ scope.with_attached_files.find(id) }
 
-  def create
-    answer = question.answers.build(answer_params)
-    answer.user = current_user
+  def show
+    answer.links.new
+  end
 
+  def create
+    answer = question.answers.new(answer_params)
+    answer.user = current_user
+    
     respond_to do |format|
       if answer.save
         format.html { redirect_to question, notice: 'Answer was successfully created.' }
-        format.js { @new_answer = answer }
+        format.js { @answer = answer }
       else
         format.html { render 'questions/show' }
-        format.js { @new_answer = answer }
+        format.js { @answer = answer }
       end
     end
   end
@@ -49,7 +53,7 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if answer.mark_as_best
         format.html { render 'questions/show' }
-        format.js
+        format.js { AddRewardWorker.perform_async(answer.user.id, answer.question.id) }
       end
     end
   end
@@ -57,6 +61,6 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
 end

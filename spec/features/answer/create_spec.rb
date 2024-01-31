@@ -7,7 +7,7 @@ feature 'User can create answer', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }  
+  given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
@@ -31,11 +31,13 @@ feature 'User can create answer', %q{
     end
   end
 
-  scenario 'Unauthenticated user tries to answer a question' do
-    visit question_path(question)
-    fill_in 'new-answer-body', with: 'Test answer'
-    click_on 'Answer'
+  describe 'Unauthenticated user' do
+    scenario 'tries to answer a question' do
+      visit question_path(question)
+      fill_in 'new-answer-body', with: 'Test answer'
+      click_on 'Answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    end
   end
 end

@@ -9,6 +9,7 @@ feature 'User can edit answer', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:url) { create(:link, linkable: answer) }
 
   describe 'Authenticated user' do
     background do
@@ -16,13 +17,13 @@ feature 'User can edit answer', %q{
       visit question_path(question)
     end
 
-    scenario 'edits own answer', js: true do
+    scenario 'edits own answer + attaches file', js: true do
       within(".answers") do
         within(".answer-#{answer.id}") do
           click_on 'Edit'
 
           fill_in 'answer-body', with: 'Updated answer'
-          attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]        
       
           click_on 'Update Answer'
 
@@ -33,7 +34,7 @@ feature 'User can edit answer', %q{
       end
     end
 
-    scenario 'edits own answer', js: true do
+    scenario 'edits own answer + deletes file + removes link', js: true do
       within(".answers") do
         within(".answer-#{answer.id}") do
           click_on 'Edit'
@@ -45,11 +46,15 @@ feature 'User can edit answer', %q{
 
           click_on 'Edit'
           first('a', text: 'x').click
+
+          click_on 'remove link'
+
           click_on 'Update Answer'
 
           expect(page).to have_content 'Updated answer'
           expect(page).not_to have_link 'rails_helper.rb'
           expect(page).to have_link 'spec_helper.rb'
+          expect(page).not_to have_link 'My url', href: url
         end
       end
     end

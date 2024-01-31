@@ -1,4 +1,4 @@
-= form_with model: Question.new, remote: true do |f|
+= form_with model: question, remote: true do |f|
   .field
     = f.label :title
     = f.text_field :title, class: 'form-control'
@@ -11,5 +11,20 @@
     = f.label :files
     = f.file_field :files, class: 'form-control', multiple: true, direct_upload: true
 
+  h3= 'Links:'
+  .links
+    = f.fields_for :links do |link|
+      = render 'link_fields', f: link
+    .links
+      = link_to_add_association 'add link', f, :links
+
+  h3= 'Reward:'
+  .reward
+    = f.fields_for :reward do |reward|
+      = render 'reward_fields', { f: reward, question: question }
+    .links.max-one-association
+      = link_to_add_association 'add reward', f, :reward, force_non_association_create: true
+
   .actions
     = f.submit 'Ask', class: 'btn btn-primary'
+  

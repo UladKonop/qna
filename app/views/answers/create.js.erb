@@ -1,7 +1,7 @@
 var answerErrorsElement = document.querySelector('.answer_errors');
 
-<% if @new_answer.errors.any? %>
-  var errorsHtml = '<%= j render partial: 'shared/errors', locals: { resource: @new_answer } %>';
+<% if @answer.errors.any? %>
+  var errorsHtml = '<%= j render partial: 'shared/errors', locals: { resource: @answer } %>';
   answerErrorsElement.innerHTML = errorsHtml;
 <% else %>
   var noAnswersElement = document.querySelector('.no_answers');
@@ -39,7 +39,7 @@ var answerErrorsElement = document.querySelector('.answer_errors');
     var answersElement = document.querySelector('.answers');
 
     answerErrorsElement.innerHTML = '';
-    var newRowHtml = '<%= j render partial: 'answer', locals: { answer: @new_answer } %>';
+    var newRowHtml = '<%= j render partial: 'answer', locals: { answer: @answer } %>';
     
     var tempElement = document.createElement('tr');
     tempElement.innerHTML = newRowHtml;
@@ -51,7 +51,7 @@ var answerErrorsElement = document.querySelector('.answer_errors');
     var answersElement = document.querySelector('.answers');
 
     answerErrorsElement.innerHTML = '';
-    var newRowHtml = '<%= j render partial: 'answer', locals: { answer: @new_answer } %>';
+    var newRowHtml = '<%= j render partial: 'answer', locals: { answer: @answer } %>';
     
     var tempElement = document.createElement('tr');
     tempElement.innerHTML = newRowHtml;
