@@ -1,0 +1,13 @@
+- if rewards&.any?
+  h2 Rewards:
+  table
+    thead
+      tr
+        th Title
+        th Question title
+        th Image
+
+    tbody    
+      = render rewards
+- else
+  p No rewards yet.

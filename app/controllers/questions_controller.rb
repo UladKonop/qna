@@ -4,7 +4,16 @@ class QuestionsController < ApplicationController
 
   expose :question, find: ->(id, scope){ scope.with_attached_files.find(id) }
   expose :questions, ->{ Question.all }
+  expose :answer, ->{ question.answers.new }
   expose :answers, -> { question.answers.sort_by_best }
+
+  def show
+    answer.links.new
+  end
+
+  def new
+    question.links.new
+  end
 
   def create
     question.user = current_user
@@ -33,6 +42,10 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title,
+                                     :body,
+                                     files: [],
+                                     links_attributes: [:id, :name, :url, :_destroy],
+                                     reward_attributes: [:id, :title, :question_title, :image, :_destroy])
   end
 end

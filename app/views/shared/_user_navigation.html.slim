@@ -2,5 +2,8 @@
 b = current_user.email
 | 
 span = ' !'
+- if current_user.rewards.present?
+  | &nbsp;|&nbsp;
+  = link_to 'Rewards', user_rewards_url(current_user), class: 'some-css-class'
 | &nbsp;|&nbsp;
 = link_to 'Logout', destroy_user_session_path, class: 'some-css-class', data: { method: :delete }

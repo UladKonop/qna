@@ -11,6 +11,14 @@ RSpec.describe AnswersController, type: :controller do
     login(user)
   end
 
+  describe 'GET #show' do
+    before { get :show, params: { id: answer } }
+
+    it 'assigns new link for answer' do
+      expect(assigns(:exposed_answer).links.first).to be_a_new(Link)
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new answer in the database' do

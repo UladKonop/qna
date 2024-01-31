@@ -1,0 +1,8 @@
+tr
+  td = reward.title
+  td = reward.question_title
+  td 
+    - if reward.image.attached?
+      dd= link_to reward.image.filename.to_s, url_for(reward.image)
+    - else
+      dd = 'No files yet.'

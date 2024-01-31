@@ -1,6 +1,6 @@
 h2 Question Details
 
-dl
+dl.question
   dt Title
   dd= question.title
 
@@ -14,6 +14,16 @@ dl
   - else
    dd = 'No files yet.'
 
+  dt Links
+  - if question.links
+    - question.links.each do |link|
+      - if link.is_a_gist?
+        dd = link.gist_content
+      - else
+        = link_to link.name, absolute_url_for(link.url), target: :blank, id: "link-#{link.id}"
+  - else
+   dd = 'No links yet.'
+
 - if current_user&.author_of?(question)
   = link_to 'Edit', edit_question_path(question), class: 'btn btn-secondary'
 
@@ -25,6 +35,7 @@ h3.answers_table_title Answers
         th Body
         th Best
         th Files
+        th Links
         th Actions
 
     tbody.answers
@@ -33,7 +44,6 @@ h3.answers_table_title Answers
   p.no_answers No answers yet.
 
 .answer_errors
-  = render partial: 'shared/errors', locals: { resource: @new_answer }
 
 = render 'answers/form', locals: { question: question }
 
