@@ -25,9 +25,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
       end
 
-      it 'redirects to the question show view' do
+      it 'redirects to the answer' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to(question)
+        expect(response).to render_template('answers/_answer')
       end      
     end
 
@@ -38,9 +38,9 @@ RSpec.describe AnswersController, type: :controller do
         end.to_not change(Answer, :count)
       end
 
-      it 're-renders the question show view' do
+      it 'renders the question errors' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template('questions/show')
+        expect(response).to render_template('shared/_errors')
       end
     end
   end

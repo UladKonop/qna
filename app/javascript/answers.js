@@ -6,7 +6,6 @@ document.addEventListener('turbolinks:load', function () {
         e.preventDefault();
         e.target.style.display = 'none';
         var answerId = e.target.dataset.answerId;
-        var questionId = e.target.dataset.questionId;
 
         var editAnswerForm = document.getElementById('edit-answer-' + answerId);
         editAnswerForm.classList.remove('hidden');

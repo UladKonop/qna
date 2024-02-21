@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, except: %i[index show]
   before_action -> { authorize_user(answer, answer.question) }, only: [:edit, :destroy]
   before_action -> { authorize_user(question, question) }, only: [:mark_as_best]
@@ -16,10 +18,10 @@ class AnswersController < ApplicationController
     
     respond_to do |format|
       if answer.save
-        format.html { redirect_to question, notice: 'Answer was successfully created.' }
+        format.html { render answer }
         format.js { @answer = answer }
       else
-        format.html { render 'questions/show' }
+        format.html { render partial: 'shared/errors', resource: answer }
         format.js { @answer = answer }
       end
     end

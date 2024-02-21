@@ -10,6 +10,7 @@ import "channels"
 
 require("answers")
 require("questions")
+require("votes")
 require("@oddcamp/cocoon-vanilla-js")
 
 Rails.start()
