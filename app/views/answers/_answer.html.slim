@@ -37,24 +37,30 @@ tr class="answer-#{answer.id}"
       dd = 'No files yet.'
 
   td class="answer-#{answer.id}-links"
-    - if answer.links
+    - if answer.links.present?
       - answer.links.each do |link|
         div.link-to
         - if link.is_a_gist?
-         dd = link.gist_content
+          dd = link.gist_content
         - else
-          = link_to link.name, absolute_url_for(link.url), target: :blank, id: "link-#{link.id}"
-          
+          dd = link_to link.name, absolute_url_for(link.url), target: :blank, id: "link-#{link.id}"
     - else
       dd = 'No links yet.'
+
+  td class="answer_votes_difference-#{answer.id}"
+    = answer.votes_difference
 
   td
     = link_to 'Show', answer, class: 'btn btn-primary'
     - if !answer.best? && current_user&.author_of?(question)
-        = link_to 'Set as Best', mark_as_best_answer_path(id: answer.id, question_id: question.id), data: {method: :post }, remote: true, class: 'btn btn-success best-answer-link'
+        = link_to 'Set as Best', mark_as_best_answer_path(id: answer.id, question_id: question.id), data: { method: :post }, remote: true, class: 'btn btn-success best-answer-link'
     - if current_user&.author_of?(answer) && answer.persisted?
       = link_to 'Edit', '#', class: 'btn btn-secondary edit-answer-link', data: { answer_id: answer.id, question_id: question.id }
       = link_to 'Delete', answer, data: { method: :delete }, remote: true, class: 'btn btn-danger'
+    - if user_signed_in?
+      - if !current_user&.author_of?(answer) && answer.persisted?
+        = link_to 'Upvote', '#', class: "btn btn-success upvote-link", data: { votable_type: "answer", votable_id: answer.id }
+        = link_to 'Downvote', '#', class: "btn btn-danger downvote-link", data: { votable_type: "answer", votable_id: answer.id }
 
 
 .answer_errors
