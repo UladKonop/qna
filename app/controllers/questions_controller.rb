@@ -2,7 +2,10 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: %i[index show]
+  before_action :gon_user, unless: :devise_controller?
   before_action -> { authorize_user(question, question) }, only: [:edit, :destroy]
+
+  after_action :publish_question, only: [:create]
 
   expose :question, find: ->(id, scope){ scope.with_attached_files.find(id) }
   expose :questions, ->{ Question.all }
@@ -42,6 +45,22 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return if question.errors.any?
+
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: question }
+      )
+    )
+  end
+
+  def gon_user
+    gon.user_id = current_user.id if current_user
+  end
 
   def question_params
     params.require(:question).permit(:title,

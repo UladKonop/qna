@@ -87,3 +87,5 @@ gem "aws-sdk-s3"
 gem "cocoon"
 gem "faraday-retry"
 gem "sidekiq"
+
+gem 'gon'
