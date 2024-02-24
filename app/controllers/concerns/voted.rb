@@ -12,13 +12,13 @@ module Voted
   def upvote
     @votable.upvote(current_user)
 
-    render json: { status: 'Success', message: 'Upvoted successfully', votes_difference: @votable.votes_difference}
+    render json: { status: 'Success', message: 'Upvoted successfully', votes_difference: @votable.votes_difference }
   end
 
   def downvote
     @votable.downvote(current_user)
 
-    render json: { status: 'Success', message: 'Downvoted successfully', votes_difference: @votable.votes_difference}
+    render json: { status: 'Success', message: 'Downvoted successfully', votes_difference: @votable.votes_difference }
   end
 
   private
@@ -32,10 +32,10 @@ module Voted
   end
 
   def check_user_permission
-    if @votable.user_id == current_user.id
-      render json: { status: 'Error', message: 'You cannot vote for your own question or answer' },
-             status: :unprocessable_entity
-    end
+    return unless @votable.user_id == current_user.id
+
+    render json: { status: 'Error', message: 'You cannot vote for your own question or answer' },
+           status: :unprocessable_entity
   end
 
   def check_user_voted

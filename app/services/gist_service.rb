@@ -3,23 +3,21 @@ class GistService
     @gist_id = gist_id
     @client = Octokit::Client.new
   end
-  
+
   def call
-    begin
-      files = @client.gist(@gist_id)[:files]
+    files = @client.gist(@gist_id)[:files]
 
-      content = ''
+    content = ''
 
-      files.each do |filename|
-        content << filename.last[:content]
-        content << "\n"
-      end
-
-      content
-    rescue Octokit::NotFound => e
-      puts "Gist with id '#{gist_id}' not found."
-    rescue StandardError => e
-      puts "Error: #{e.message}"
+    files.each do |filename|
+      content << filename.last[:content]
+      content << "\n"
     end
+
+    content
+  rescue Octokit::NotFound
+    puts "Gist with id '#{gist_id}' not found."
+  rescue StandardError => e
+    puts "Error: #{e.message}"
   end
 end

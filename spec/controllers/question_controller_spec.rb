@@ -20,10 +20,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-
   describe 'GET #show' do
     before { get :show, params: { id: question } }
-    
+
     it 'assigns new answer for question' do
       expect(assigns(:exposed_answer)).to be_a_new(Answer)
     end
@@ -31,7 +30,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assigns new link for answer' do
       expect(assigns(:exposed_answer).links.first).to be_a_new(Link)
     end
-
 
     it 'renders show view' do
       expect(response).to render_template :show
@@ -73,7 +71,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not save a new question to the DB' do
         expect do
           post :create, params: { question: attributes_for(:question, :invalid) }
-        end.to_not change(Question, :count)
+        end.not_to change(Question, :count)
       end
 
       it 're-renders new view' do
@@ -132,6 +130,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'when the user is not the author of the question' do
       let(:other_user) { create(:user) }
+
       before { sign_in(other_user) }
 
       it "doesn't delete the question from the DB" do
@@ -140,7 +139,7 @@ RSpec.describe QuestionsController, type: :controller do
         end.not_to change(Question, :count)
       end
 
-      it "redirects to question view" do
+      it 'redirects to question view' do
         delete :destroy, params: { id: question.id }
         expect(response).to redirect_to(question_path(question.id))
       end
