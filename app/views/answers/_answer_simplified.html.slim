@@ -1,0 +1,54 @@
+tr class="answer-#{answer.id}"
+  td
+    = answer.body
+
+    = form_with model: answer, method: :patch, local: false, class: 'hidden', html: { id: "edit-answer-#{ answer.id }"} do |f|
+      .field
+        = f.label :body, 'Your Answer:'
+        = f.text_area :body, class: 'form-control', id: 'answer-body'
+
+      .field
+        = hidden_field_tag 'question_id', question.id
+
+      h3= 'Links:'
+      .links
+        = f.fields_for :links do |link|
+          = render 'link_fields', f: link
+        .links
+          = link_to_add_association 'add link', f, :links
+
+      .field
+        = f.label :files
+        = f.file_field :files, class: 'form-control', multiple: true, direct_upload: true
+
+      .actions
+        = f.submit 'Update Answer', class: 'btn btn-primary'
+
+  td
+    .best-status
+      = answer.best? ? '+' : '-'
+
+  td class="answer-#{answer.id}-files"
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        div.link-to-file
+          = link_to file.filename.to_s, url_for(file), id: "file-#{file.id}"
+    - else
+      dd = 'No files yet.'
+
+  td class="answer-#{answer.id}-links"
+    - if answer.links.present?
+      - answer.links.each do |link|
+        div.link-to
+        - if link.is_a_gist?
+          dd = link.gist_content
+        - else
+          dd = link_to link.name, absolute_url_for(link.url), target: :blank, id: "link-#{link.id}"
+    - else
+      dd = 'No links yet.'
+
+  td class="answer_votes_difference-#{answer.id}"
+    = answer.votes_difference
+
+  td
+    = link_to 'Show', answer_path(id: answer.id), class: 'btn btn-primary'

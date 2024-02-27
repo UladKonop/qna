@@ -5,7 +5,6 @@ class QuestionsController < ApplicationController
   include Commented
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :gon_user, unless: :devise_controller?
   before_action -> { authorize_user(question, question) }, only: %i[edit destroy]
 
   after_action :publish_question, only: [:create]
@@ -59,10 +58,6 @@ class QuestionsController < ApplicationController
         locals: { question: question }
       )
     )
-  end
-
-  def gon_user
-    gon.user_id = current_user.id if current_user
   end
 
   def question_params

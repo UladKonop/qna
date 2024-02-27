@@ -8,6 +8,8 @@ class AnswersController < ApplicationController
   before_action -> { authorize_user(answer, answer.question) }, only: %i[edit destroy]
   before_action -> { authorize_user(question, question) }, only: [:mark_as_best]
 
+  after_action :publish_answer, only: [:create]
+
   expose :question
   expose :answer, find: ->(id, scope) { scope.with_attached_files.find(id) }
 
@@ -61,6 +63,18 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    return if @answer.errors.any?
+
+    ActionCable.server.broadcast(
+      'answers',
+      ApplicationController.render(
+        partial: 'answers/answer_simplified',
+        locals: { answer: @answer, question: question }
+      )
+    )
+  end
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: %i[id name url _destroy])
