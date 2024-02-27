@@ -28,7 +28,8 @@ dl.question
   dd class="question_votes_difference-#{question.id}" = question.votes_difference
 
 - if current_user&.author_of?(question)
-  = link_to 'Edit', edit_question_path(question), class: 'btn btn-secondary'
+  = link_to 'Edit', edit_question_path(question), class: 'btn btn-warning'
+  = link_to 'Delete', question_path(question), data: { method: :delete }, class: 'btn btn-danger'
 - else
   - if user_signed_in?
     = link_to 'Upvote', '#', class: "btn btn-success upvote-link question_vote_buttons-#{question.id}", data: { votable_type: "question", votable_id: question.id }

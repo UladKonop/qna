@@ -13,7 +13,6 @@ require("answers")
 require("questions")
 require("votes")
 require("@oddcamp/cocoon-vanilla-js")
-require("handlebars")
 
 Rails.start()
 Turbolinks.start()
