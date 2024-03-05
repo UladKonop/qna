@@ -17,4 +17,15 @@ document.addEventListener('turbolinks:load', function () {
       }
     });
   }
+
+  var questions_table = document.querySelector('tbody.questions_table');
+
+  window.App.cable.subscriptions.create('QuestionsChannel', {
+    connected: function() {
+      this.perform('follow');
+    },
+    received: function(data) {
+      questions_table.insertAdjacentHTML('beforeend', data);
+    }
+  });
 });

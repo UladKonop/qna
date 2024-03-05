@@ -30,5 +30,14 @@ document.addEventListener('turbolinks:load', function () {
           });
       }
     });
+
+    window.App.cable.subscriptions.create('AnswersChannel', {
+      connected: function() {
+        this.perform('follow');
+      },
+      received: function(data) {
+        answers.insertAdjacentHTML('beforeend', data);
+      }
+    });
   }
 });

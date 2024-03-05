@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   def authorize_user(resource, destination)
     return if current_user&.author_of?(resource)

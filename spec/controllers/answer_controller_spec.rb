@@ -6,7 +6,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let!(:answer) { create(:answer, user: user, question: question) }
-  
+
   before do
     login(user)
   end
@@ -22,20 +22,22 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
+        expect do
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        end.to change(Answer, :count).by(1)
       end
 
       it 'redirects to the answer' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
         expect(response).to render_template('answers/_answer')
-      end      
+      end
     end
 
     context 'with invalid attributes' do
       it 'does not save a new answer to the DB' do
         expect do
           post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        end.to_not change(Answer, :count)
+        end.not_to change(Answer, :count)
       end
 
       it 'renders the question errors' do
@@ -93,13 +95,14 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'when the user is not the author of the answer' do
       let(:other_user) { create(:user) }
+
       before { sign_in(other_user) }
 
       it "doesn't delete the answer from the DB" do
         expect { delete :destroy, params: { question_id: question, id: answer.id } }.not_to change(Answer, :count)
       end
 
-      it "redirects to the question show view" do
+      it 'redirects to the question show view' do
         delete :destroy, params: { question_id: question, id: answer.id }
         expect(response).to redirect_to(question)
       end
@@ -125,6 +128,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'when the user is not the author of the question' do
       let(:other_user) { create(:user) }
+
       before { sign_in(other_user) }
 
       it 'does not mark the answer as the best' do

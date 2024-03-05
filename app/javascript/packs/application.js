@@ -7,6 +7,7 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import { createConsumer } from "@rails/actioncable";
 
 require("answers")
 require("questions")
@@ -16,3 +17,6 @@ require("@oddcamp/cocoon-vanilla-js")
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+window.App = window.App || {}
+window.App.cable = createConsumer()

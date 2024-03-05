@@ -2,13 +2,12 @@
 
 require 'rails_helper'
 
-feature 'User can register', "
+describe 'User can register', "
   In order to access the system
   As an unauthenticated user
   I'd like to be able to register
 " do
-
-  scenario 'User registers with valid information' do
+  it 'User registers with valid information' do
     visit new_user_registration_path
     fill_in 'Email', with: 'new_user@test.com'
     fill_in 'user_password', with: 'password123'
@@ -18,7 +17,7 @@ feature 'User can register', "
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
 
-  scenario 'User tries to register with invalid information' do
+  it 'User tries to register with invalid information' do
     visit new_user_registration_path
     fill_in 'Email', with: 'invalid_email'
     fill_in 'user_password', with: 'password'
