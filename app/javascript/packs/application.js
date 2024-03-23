@@ -9,6 +9,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import { createConsumer } from "@rails/actioncable";
 
+require("action_cable")
 require("answers")
 require("questions")
 require("votes")

@@ -35,6 +35,22 @@ dl.question
     = link_to 'Upvote', '#', class: "btn btn-success upvote-link question_vote_buttons-#{question.id}", data: { votable_type: "question", votable_id: question.id }
     = link_to 'Downvote', '#', class: "btn btn-danger downvote-link question_vote_buttons-#{question.id}", data: { votable_type: "question", votable_id: question.id }
 
+h3.comments_table_title Comments
+- if comments.any?
+  table.comments-table
+    thead
+      tr
+        th Body
+
+    tbody.comments
+      = render comments
+- else
+  p.no_comments No comments yet.
+
+.comment_errors
+
+= render partial: 'comments/form', locals: { commentable: question }
+
 h3.answers_table_title Answers
 - if answers.any?
   table.answers-table

@@ -6,14 +6,20 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :commentable do
+    member do
+      post :comment
+    end
+  end
+
   devise_for :users
 
   resources :users do
     resources :rewards, only: [:index]
   end
 
-  resources :questions, concerns: :votable do
-    resources :answers, shallow: true, concerns: :votable, except: %w[index edit] do
+  resources :questions, concerns: [:votable, :commentable] do
+    resources :answers, shallow: true, concerns: [:votable, :commentable], except: %w[index edit] do
       member do
         post 'mark_as_best'
       end

@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
   expose :questions, -> { Question.all }
   expose :answer, -> { question.answers.new }
   expose :answers, -> { question.answers.sort_by_best }
+  expose :comments, -> { question.comments }
 
   def show
     answer.links.new

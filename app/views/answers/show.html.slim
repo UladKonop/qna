@@ -5,6 +5,22 @@ h2 Answer Details
     dt Body
     dd= answer.body
 
-- if current_user&.author_of?(answer)
+h3.comments_table_title Comments
+- if comments.any?
+  table.comments-table
+    thead
+      tr
+        th Body
+
+    tbody.comments
+      = render comments
+- else
+  p.no_comments No comments yet.
+
+.comment_errors
+
+= render partial: 'comments/form', locals: { commentable: answer }
+
+- if current_user&.author_of?(answer) && answer.persisted?
   = link_to 'Edit', edit_answer_path(answer), class: 'btn btn-secondary'
 = link_to 'Back', question_path(answer.question), class: 'btn btn-primary'

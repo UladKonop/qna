@@ -8,13 +8,13 @@ class AnswersController < ApplicationController
   before_action -> { authorize_user(answer, answer.question) }, only: %i[edit destroy]
   before_action -> { authorize_user(question, question) }, only: [:mark_as_best]
 
-  after_action :publish_answer, only: [:create]
-
   expose :question
   expose :answer, find: ->(id, scope) { scope.with_attached_files.find(id) }
+  expose :comments, -> { answer.comments }
 
   def show
     answer.links.new
+    answer.comments.new
   end
 
   def create
@@ -27,7 +27,10 @@ class AnswersController < ApplicationController
       else
         format.html { render partial: 'shared/errors', resource: answer }
       end
-      format.js { @answer = answer }
+      format.js do
+        @answer = answer
+        publish_answer
+      end
     end
   end
 
@@ -68,7 +71,7 @@ class AnswersController < ApplicationController
     return if @answer.errors.any?
 
     ActionCable.server.broadcast(
-      'answers',
+      "question_#{question.id}_answers",
       ApplicationController.render(
         partial: 'answers/answer_simplified',
         locals: { answer: @answer, question: question }
