@@ -11,5 +11,9 @@ FactoryBot.define do
     trait :best do
       best { true }
     end
+
+    trait :with_comment do
+      comment
+    end
   end
 end

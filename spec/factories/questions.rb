@@ -8,5 +8,13 @@ FactoryBot.define do
     trait :invalid do
       title { nil }
     end
+
+    trait :with_answer do
+      answer
+    end
+
+    trait :with_comment do
+      comment
+    end
   end
 end
