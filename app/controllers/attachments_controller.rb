@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_resource
   before_action -> { authorize_user(@resource, @resource) }, only: :destroy
-
 
   def destroy
     ActiveStorage::Blob.find(params[:id]).attachments.first.purge_later

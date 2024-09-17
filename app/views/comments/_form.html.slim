@@ -1,0 +1,7 @@
+= form_with model:  commentable.comments.new, url: comment_question_path(commentable), remote: true do |f|
+  .field
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+
+  .actions
+    = f.submit 'Comment', class: 'btn btn-primary'
